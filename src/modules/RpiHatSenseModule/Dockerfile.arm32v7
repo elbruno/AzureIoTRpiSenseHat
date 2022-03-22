@@ -1,7 +1,6 @@
 # FROM arm32v7/python:3.7-slim-buster
 FROM balenalib/raspberrypi3:buster
 
-
 WORKDIR /app
 
 # Code added to support WebApp

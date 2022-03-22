@@ -15,7 +15,11 @@ In one of these sessions I shared how to do a live setup of a Raspberry Pi as a 
 
 And for the final demo of this session, I used a SenseHat to:
 
->> - Display a message on the Pi's LED screen, using the SenseHat's built-in LED matrix. 
+- Send telemetry to Azure IoT Hub with information from SenseHat's sensors: 
+    - temperature
+    - humidity
+    - pressure
+- Display a message in the SenseHat's display when the device twin information is updated.
 
 ## What is a Sense HAT?
 
@@ -23,7 +27,7 @@ The Sense HAT is an add-on board for the Raspberry Pi, made especially for the A
 
 ![how to attach the sense hat](img/animated_sense_hat.gif)
 
->> If you want to know more about
+If you want to know more about SenseHat and how to use it, you can read [this article](https://www.raspberrypi.org/learning/getting-started-with-the-sense-hat/).
 
 If you don’t have access to a Sense HAT, you can use the emulator. There is an online emulator you can use in your browser to write and test code for the Sense HAT.
 
@@ -37,10 +41,54 @@ If you don’t have access to a Sense HAT, you can use the emulator. There is an
 ## Creating an Azure IoT Edge Module
 
 The main development tools for this scenario are 
-- Visual Studio Code, available from 
-- Visual Studio Code for Azure IoT, available from 
+- Visual Studio Code, available from [Microsoft Visual Studio Code Home Page](https://code.visualstudio.com/).
+- Visual Studio Code for Azure IoT, available from [Microsoft Visual Studio Code Azure IoT Tools](https://marketplace.visualstudio.com/items?itemName=vsciot-vscode.azure-iot-tools).
 
-The sample code for the Azure IoT Edge 
+The sample code for the Azure IoT Edge.
+
+The base docker image is using a balena lib to build the image. And installing some dependencies.
+
+```docker
+# FROM arm32v7/python:3.7-slim-buster
+FROM balenalib/raspberrypi3:buster
+
+WORKDIR /app
+
+# Code added to support WebApp
+RUN apt-get update &&  apt-get install -y --no-install-recommends \
+        python3-pip \
+        && rm -rf /var/lib/apt/lists/* \
+        && apt-get -y autoremove
+
+# RUN python -m pip install --upgrade pip
+RUN apt-get update &&  apt-get install -y --no-install-recommends \
+        sense-hat \
+        && rm -rf /var/lib/apt/lists/* \
+        && apt-get -y autoremove
+
+
+RUN pip3 install --upgrade setuptools
+RUN pip3 install flask ptvsd 
+
+COPY requirements.txt ./
+RUN pip3 install -r requirements.txt
+
+COPY . .
+
+CMD [ "python3", "-u", "./main.py" ]
+```
+### Important notes
+
+- To install the sensehat library, you need to install the sensehat package.
+
+- This application also uses flask. Flask is a Python web framework that helps you write simple and efficient web applications. If you want to know more about Flask and how to use it, you can read [this article](https://flask.palletsprojects.com/en/1.1.x/).
+
+- To build the image you need to run the following command:
+
+```bash
+docker build -t sensehat .
+```
+
 
 ## Testing the sample
 
