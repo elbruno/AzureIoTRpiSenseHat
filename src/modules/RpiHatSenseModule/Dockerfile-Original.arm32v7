@@ -1,0 +1,41 @@
+FROM arm32v7/python:3.7-slim-buster
+
+WORKDIR /app
+
+# Code added to support WebApp
+RUN python -m pip install --upgrade pip
+
+COPY requirements.txt ./
+RUN pip install -r requirements.txt
+
+RUN apt update && apt install -y libjpeg62-turbo libopenjp2-7 libtiff5 libatlas-base-dev libgl1-mesa-glx
+RUN pip install absl-py six protobuf wrapt gast astor termcolor keras_applications keras_preprocessing --no-deps
+RUN pip install numpy==1.16 tensorflow==1.13.1 --extra-index-url 'https://www.piwheels.org/simple' --no-deps
+RUN pip install flask pillow --index-url 'https://www.piwheels.org/simple'
+
+RUN apt-get install -y cmake
+RUN apt-get install -y qt4-default
+
+# custom installation for RPI  dependencies defined in requirements.txt
+RUN apt-get update 
+RUN apt-get install -y gcc
+RUN pip install RPi.GPIO
+
+
+RUN pip install sense-hat
+# RUN apt-get install -y sense-hat
+
+
+# RUN git clone https://github.com/RPi-Distro/RTIMULib.git
+# RUN cd RTIMULib
+# RUN cd Linux/
+# RUN git clone https://github.com/RPi-Distro/RTIMULib.git
+# RUN cd RTIMULib
+# RUN cd Linux/
+# RUN git clone https://github.com/RPi-Distro/RTIMULib.git
+# RUN cd RTIMULib
+# RUN cd Linux/
+# RUN pip install RTIMULib
+COPY . .
+
+CMD [ "python3", "-u", "./main.py" ]

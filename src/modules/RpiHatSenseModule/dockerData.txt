@@ -1,0 +1,20 @@
+# Container Create Options
+{
+    "HostConfig": {
+        "Privileged": true
+    }
+}
+
+# enviroment variables
+ReportValues / true false / true
+CounterInterval / number / 10
+ReadTwinSleepInterval / number / 10
+
+# Module Twin Settings
+{
+    "message": "Hi",
+    "colour": "green",
+    "temperature": 0,
+    "humidity": 0,
+    "pressure": 0
+}

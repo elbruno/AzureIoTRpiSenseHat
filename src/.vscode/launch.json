@@ -1,0 +1,79 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "RpiHatSenseModule Remote Debug (Python)",
+      "type": "python",
+      "request": "attach",
+      "port": 5678,
+      "host": "localhost",
+      "logToFile": true,
+      "redirectOutput": true,
+      "pathMappings": [
+        {
+          "localRoot": "${workspaceFolder}/modules/RpiHatSenseModule",
+          "remoteRoot": "/app"
+        }
+      ],
+      "windows": {
+        "pathMappings": [
+          {
+            "localRoot": "${workspaceFolder}\\modules\\RpiHatSenseModule",
+            "remoteRoot": "/app"
+          }
+        ]
+      }
+    },
+    {
+      "name": "RpiHatSenseModule Local Debug (Python)",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/modules/RpiHatSenseModule/main.py",
+      "console": "integratedTerminal",
+      "env": {
+        "EdgeHubConnectionString": "${config:azure-iot-edge.EdgeHubConnectionString}",
+        "EdgeModuleCACertificateFile": "${config:azure-iot-edge.EdgeModuleCACertificateFile}"
+      },
+      "windows": {
+        "program": "${workspaceFolder}\\modules\\RpiHatSenseModule\\main.py"
+      }
+    },
+    {
+      "name": "RpiSenseHat Remote Debug (Python)",
+      "type": "python",
+      "request": "attach",
+      "port": 5678,
+      "host": "localhost",
+      "logToFile": true,
+      "redirectOutput": true,
+      "pathMappings": [
+        {
+          "localRoot": "${workspaceFolder}/modules/RpiSenseHat",
+          "remoteRoot": "/app"
+        }
+      ],
+      "windows": {
+        "pathMappings": [
+          {
+            "localRoot": "${workspaceFolder}\\modules\\RpiSenseHat",
+            "remoteRoot": "/app"
+          }
+        ]
+      }
+    },
+    {
+      "name": "RpiSenseHat Local Debug (Python)",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/modules/RpiSenseHat/main.py",
+      "console": "integratedTerminal",
+      "env": {
+        "EdgeHubConnectionString": "${config:azure-iot-edge.EdgeHubConnectionString}",
+        "EdgeModuleCACertificateFile": "${config:azure-iot-edge.EdgeModuleCACertificateFile}"
+      },
+      "windows": {
+        "program": "${workspaceFolder}\\modules\\RpiSenseHat\\main.py"
+      }
+    }
+  ]
+}
